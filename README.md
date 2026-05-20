@@ -1,4 +1,4 @@
-**Smart Leads Dashboard**
+# Smart Leads Dashboard 
 
 A full-stack Lead Management Dashboard built with the MERN stack (MongoDB, Express.js, React, Node.js) featuring JWT authentication, role-based access control, advanced filtering, and CSV export capabilities.
 
