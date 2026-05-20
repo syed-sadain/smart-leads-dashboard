@@ -1,0 +1,20 @@
+/* frontend/src/index.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* OPTIONAL FIX: define border color if used */
+@layer base {
+  :root {
+    --border: 220 13% 91%;
+  }
+
+  * {
+    @apply border-gray-200;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+  }
+}
