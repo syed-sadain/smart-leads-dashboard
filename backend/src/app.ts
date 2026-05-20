@@ -10,41 +10,44 @@ import { logger } from './utils/logger';
 
 const app: Application = express();
 
-/* ---------------- Security Middleware ---------------- */
+/* ---------------- Security ---------------- */
 
 app.use(helmet());
 
-/* ---------------- CORS Configuration ---------------- */
+/* ---------------- CORS ---------------- */
 
 const allowedOrigins = [
   'http://localhost:5173',
   'https://smart-leads-dashboard-lime.vercel.app',
+  'https://smart-leads-dashboard-syed-sadains-projects.vercel.app',
 ];
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (Postman/mobile apps)
+    origin: function (origin, callback) {
+      // allow requests with no origin
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
       }
-
-      return callback(new Error('CORS not allowed'));
     },
+
     credentials: true,
-    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
-/* ---------------- Rate Limiting ---------------- */
+// handle preflight requests
+app.options('*', cors());
+
+/* ---------------- Rate Limit ---------------- */
 
 const limiter = rateLimit({
-  windowMs: parseInt(
-    process.env.RATE_LIMIT_WINDOW_MS || '900000',
-    10
-  ),
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10),
   max: parseInt(process.env.RATE_LIMIT_MAX || '100', 10),
   message: 'Too many requests from this IP, please try again later',
   standardHeaders: true,
@@ -53,16 +56,10 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-/* ---------------- Body Parsers ---------------- */
+/* ---------------- Body Parser ---------------- */
 
 app.use(express.json({ limit: '10mb' }));
-
-app.use(
-  express.urlencoded({
-    extended: true,
-    limit: '10mb',
-  })
-);
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 /* ---------------- Logging ---------------- */
 
@@ -78,11 +75,11 @@ if (process.env.NODE_ENV === 'development') {
   );
 }
 
-/* ---------------- API Routes ---------------- */
+/* ---------------- Routes ---------------- */
 
 app.use('/api/v1', routes);
 
-/* ---------------- Root Route ---------------- */
+/* ---------------- Root ---------------- */
 
 app.get('/', (_req, res) => {
   res.json({
@@ -93,7 +90,7 @@ app.get('/', (_req, res) => {
   });
 });
 
-/* ---------------- Error Handling ---------------- */
+/* ---------------- Errors ---------------- */
 
 app.use(notFoundHandler);
 app.use(errorHandler);
