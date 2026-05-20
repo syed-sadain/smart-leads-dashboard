@@ -10,16 +10,27 @@ import { logger } from './utils/logger';
 
 const app: Application = express();
 
-/* ---------------- Security ---------------- */
+/* =========================================================
+   Security Middleware
+========================================================= */
 
 app.use(helmet());
 
-/* ---------------- CORS ---------------- */
+/* =========================================================
+   CORS Configuration
+========================================================= */
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://smart-leads-dashboard-lime.vercel.app',
+
+  // OLD Vercel URL
   'https://smart-leads-dashboard-syed-sadains-projects.vercel.app',
+
+  // NEW Vercel URL
+  'https://smart-leads-dashboard-l7muhtynk-syed-sadains-projects.vercel.app',
+
+  // Lime URL
+  'https://smart-leads-dashboard-lime.vercel.app',
 ];
 
 app.use(
@@ -31,37 +42,47 @@ app.use(
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        callback(new Error(`CORS blocked for origin: ${origin}`));
       }
     },
 
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
-// handle preflight requests
+// Handle preflight requests
 app.options('*', cors());
 
-/* ---------------- Rate Limit ---------------- */
+/* =========================================================
+   Rate Limiting
+========================================================= */
 
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10),
+  windowMs: parseInt(
+    process.env.RATE_LIMIT_WINDOW_MS || '900000',
+    10
+  ),
   max: parseInt(process.env.RATE_LIMIT_MAX || '100', 10),
-  message: 'Too many requests from this IP, please try again later',
+  message:
+    'Too many requests from this IP, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
 });
 
 app.use('/api/', limiter);
 
-/* ---------------- Body Parser ---------------- */
+/* =========================================================
+   Body Parsers
+========================================================= */
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-/* ---------------- Logging ---------------- */
+/* =========================================================
+   Logging
+========================================================= */
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -75,22 +96,27 @@ if (process.env.NODE_ENV === 'development') {
   );
 }
 
-/* ---------------- Routes ---------------- */
+/* =========================================================
+   API Routes
+========================================================= */
 
 app.use('/api/v1', routes);
 
-/* ---------------- Root ---------------- */
+/* =========================================================
+   Root Route
+========================================================= */
 
 app.get('/', (_req, res) => {
   res.json({
     success: true,
-    message: 'Smart Leads Dashboard API',
-    version: '1.0.0',
-    documentation: '/api/v1/health',
+    message: 'Smart Leads API is running',
+    timestamp: new Date().toISOString(),
   });
 });
 
-/* ---------------- Errors ---------------- */
+/* =========================================================
+   Error Handling
+========================================================= */
 
 app.use(notFoundHandler);
 app.use(errorHandler);
