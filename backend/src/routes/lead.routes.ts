@@ -10,15 +10,45 @@ import { validate } from '../middleware/validate';
 
 const router = Router();
 
-// All routes require authentication
+/* =========================================================
+   Protected Routes
+========================================================= */
+
+// All routes below require login
 router.use(authenticate);
 
-router.get('/stats', salesOrAdmin, LeadController.getLeadStats);
-router.get('/export/csv', salesOrAdmin, LeadController.exportLeadsCSV);
+/* =========================================================
+   Lead Statistics & Export
+========================================================= */
+
+router.get(
+  '/stats',
+  salesOrAdmin,
+  LeadController.getLeadStats
+);
+
+router.get(
+  '/export/csv',
+  salesOrAdmin,
+  LeadController.exportLeadsCSV
+);
+
+/* =========================================================
+   Get All Leads & Create Lead
+========================================================= */
 
 router
   .route('/')
-  .get(salesOrAdmin, leadsQueryValidator, validate, LeadController.getLeads)
+
+  // GET /api/v1/leads
+  .get(
+    salesOrAdmin,
+    leadsQueryValidator,
+    validate,
+    LeadController.getLeads
+  )
+
+  // POST /api/v1/leads
   .post(
     salesOrAdmin,
     createLeadValidator,
@@ -26,15 +56,31 @@ router
     LeadController.createLead
   );
 
+/* =========================================================
+   Single Lead Routes
+========================================================= */
+
 router
   .route('/:id')
-  .get(salesOrAdmin, LeadController.getLeadById)
+
+  // GET /api/v1/leads/:id
+  .get(
+    salesOrAdmin,
+    LeadController.getLeadById
+  )
+
+  // PATCH /api/v1/leads/:id
   .patch(
     salesOrAdmin,
     updateLeadValidator,
     validate,
     LeadController.updateLead
   )
-  .delete(salesOrAdmin, LeadController.deleteLead);
+
+  // DELETE /api/v1/leads/:id
+  .delete(
+    salesOrAdmin,
+    LeadController.deleteLead
+  );
 
 export default router;
