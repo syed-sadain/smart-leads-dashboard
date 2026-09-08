@@ -1,92 +1,258 @@
-# Smart Leads Dashboard 
+# 🚀 Smart Leads Dashboard
 
-A full-stack Lead Management Dashboard built with the MERN stack (MongoDB, Express.js, React, Node.js) featuring JWT authentication, role-based access control, advanced filtering, and CSV export capabilities.
+> A production-ready **Lead Management & Sales Dashboard** built with the MERN stack, featuring secure authentication, role-based access control, advanced lead filtering, pagination, CSV export, and a responsive modern UI.
 
-## 🚀 Features
+---
 
-### Core Features
-- ✅ **JWT Authentication** - Secure user authentication with token-based auth
-- ✅ **Role-Based Access Control (RBAC)** - Admin and Sales user roles
-- ✅ **Lead Management (CRUD)** - Complete create, read, update, delete operations
-- ✅ **Advanced Filtering** - Filter by status, source, with search functionality
-- ✅ **Pagination** - Efficient backend pagination (10 records per page)
-- ✅ **Debounced Search** - Optimized search with 500ms debounce
-- ✅ **CSV Export** - Export filtered leads to CSV
-- ✅ **Dark Mode Support** - Toggle between light and dark themes
-- ✅ **Docker Support** - Complete containerized setup
+## ✨ Overview
 
-### Technical Features
-- 🔒 Password hashing with bcrypt
-- 🛡️ Protected routes with middleware
-- ✨ Clean code architecture
-- 📱 Responsive design
-- 🎨 Beautiful UI with TailwindCSS
-- ⚡ Fast and optimized
-- 🔄 Real-time form validation
-- 🎯 TypeScript throughout (100%)
+**Smart Leads Dashboard** is a full-stack CRM-style application designed to help sales teams efficiently manage, track, and analyze leads.
 
-## 📋 Tech Stack
+The application provides separate access levels for **Administrators** and **Sales Users**, with secure JWT-based authentication and backend-enforced authorization.
+
+### Key Highlights
+
+* 🔐 Secure JWT authentication
+* 👥 Role-Based Access Control (Admin / Sales)
+* 📊 Lead management dashboard
+* 🔎 Advanced search & filtering
+* 📄 Server-side pagination
+* 📤 CSV export
+* 🌙 Dark / Light mode
+* 🛡️ API security & rate limiting
+* ✅ Backend & frontend validation
+* 🐳 Dockerized deployment
+* 📱 Responsive UI
+* ⚡ Optimized API requests with debounced search
+* 🧩 Modular & scalable architecture
+* 💯 TypeScript-based codebase
+
+---
+
+## 🏗️ System Architecture
+
+```text
+┌──────────────────────┐
+│      React SPA       │
+│   React + TypeScript │
+│      TailwindCSS     │
+└──────────┬───────────┘
+           │
+           │ REST API / Axios
+           ▼
+┌──────────────────────┐
+│    Express.js API    │
+│   Node.js + TS       │
+│                      │
+│ • Authentication     │
+│ • Authorization      │
+│ • Validation         │
+│ • Lead Management    │
+│ • CSV Export         │
+└──────────┬───────────┘
+           │
+           │ Mongoose ODM
+           ▼
+┌──────────────────────┐
+│       MongoDB        │
+│                      │
+│ • Users              │
+│ • Leads              │
+└──────────────────────┘
+```
+
+---
+
+## 🔥 Core Features
+
+### 🔐 Authentication & Authorization
+
+* JWT-based authentication
+* Secure password hashing using bcrypt
+* Protected API routes
+* Role-based authorization
+* Admin and Sales user roles
+* Configurable token expiration
+* Automatic logout on token expiration
+
+### 👥 Role-Based Access Control
+
+| Role      | Permissions                     |
+| --------- | ------------------------------- |
+| **Admin** | Full access to leads and users  |
+| **Sales** | Manage and view their own leads |
+
+Authorization is enforced on the **backend**, ensuring users cannot bypass access restrictions through the frontend.
+
+---
+
+### 📊 Lead Management
+
+Complete CRUD functionality:
+
+* Create leads
+* View lead details
+* Update lead information
+* Delete leads
+* Update lead status
+* Track lead source
+* Add notes
+
+Supported statuses:
+
+```text
+New → Contacted → Qualified → Lost
+```
+
+Supported sources:
+
+```text
+Website
+Instagram
+Referral
+```
+
+---
+
+### 🔎 Advanced Search & Filtering
+
+Users can combine multiple filters to quickly find relevant leads.
+
+**Available filters:**
+
+* Status
+* Source
+* Name
+* Email
+* Sorting
+* Pagination
+
+Search requests use **500ms debounce** to reduce unnecessary API calls and improve performance.
+
+Example:
+
+```http
+GET /api/v1/leads?page=1&limit=10&status=New&source=Website&search=john&sort=latest
+```
+
+---
+
+### 📤 CSV Export
+
+Export leads directly from the dashboard.
+
+Features:
+
+* Export filtered results
+* Preserve active filters
+* Include complete lead information
+* Automatic CSV download
+
+Example:
+
+```http
+GET /api/v1/leads/export/csv?status=Qualified&source=Instagram
+```
+
+---
+
+### 🌙 Dark Mode
+
+* Light / Dark theme support
+* Persistent theme preference
+* Smooth UI transitions
+* Accessible color contrast
+
+---
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18** with TypeScript
-- **TailwindCSS** for styling
-- **React Router DOM** for routing
-- **Zustand** for state management
-- **React Hook Form** for form handling
-- **Axios** for API calls
-- **React Hot Toast** for notifications
-- **Lucide React** for icons
-- **Vite** as build tool
+
+| Technology      | Purpose             |
+| --------------- | ------------------- |
+| React 18        | UI development      |
+| TypeScript      | Type safety         |
+| TailwindCSS     | Styling             |
+| React Router    | Client-side routing |
+| Zustand         | State management    |
+| React Hook Form | Form management     |
+| Axios           | API communication   |
+| React Hot Toast | Notifications       |
+| Lucide React    | UI icons            |
+| Vite            | Build tooling       |
 
 ### Backend
-- **Node.js** with Express.js
-- **TypeScript** for type safety
-- **MongoDB** with Mongoose ODM
-- **JWT** for authentication
-- **Bcrypt** for password hashing
-- **Express Validator** for validation
-- **Winston** for logging
-- **Helmet** for security
-- **CORS** enabled
-- **Rate Limiting** implemented
+
+| Technology         | Purpose                    |
+| ------------------ | -------------------------- |
+| Node.js            | Runtime                    |
+| Express.js         | REST API                   |
+| TypeScript         | Type safety                |
+| MongoDB            | Database                   |
+| Mongoose           | ODM                        |
+| JWT                | Authentication             |
+| bcrypt             | Password hashing           |
+| Express Validator  | Request validation         |
+| Winston            | Application logging        |
+| Helmet             | HTTP security              |
+| CORS               | Cross-origin configuration |
+| Express Rate Limit | API protection             |
+
+### DevOps
+
+```text
+Docker
+Docker Compose
+Nginx
+MongoDB Atlas
+Vercel / Netlify
+Railway / Render
+```
+
+---
 
 ## 📁 Project Structure
 
-```
+```text
 smart-leads-dashboard/
+│
 ├── backend/
 │   ├── src/
 │   │   ├── config/
 │   │   │   └── database.ts
+│   │   │
 │   │   ├── controllers/
 │   │   │   ├── auth.controller.ts
 │   │   │   └── lead.controller.ts
+│   │   │
 │   │   ├── middleware/
 │   │   │   ├── auth.ts
 │   │   │   ├── errorHandler.ts
 │   │   │   └── validate.ts
+│   │   │
 │   │   ├── models/
 │   │   │   ├── User.ts
 │   │   │   └── Lead.ts
+│   │   │
 │   │   ├── routes/
 │   │   │   ├── auth.routes.ts
 │   │   │   ├── lead.routes.ts
 │   │   │   └── index.ts
+│   │   │
 │   │   ├── services/
 │   │   │   ├── auth.service.ts
 │   │   │   └── lead.service.ts
-│   │   ├── types/
-│   │   │   └── index.ts
-│   │   ├── utils/
-│   │   │   ├── apiResponse.ts
-│   │   │   └── logger.ts
+│   │   │
 │   │   ├── validators/
 │   │   │   ├── auth.validators.ts
 │   │   │   └── lead.validators.ts
+│   │   │
+│   │   ├── types/
+│   │   ├── utils/
 │   │   ├── app.ts
 │   │   └── server.ts
-│   ├── .env.example
-│   ├── .gitignore
+│   │
 │   ├── Dockerfile
 │   ├── package.json
 │   └── tsconfig.json
@@ -95,59 +261,23 @@ smart-leads-dashboard/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── auth/
-│   │   │   │   └── ProtectedRoute.tsx
 │   │   │   ├── dashboard/
-│   │   │   │   └── StatsCard.tsx
 │   │   │   ├── layout/
-│   │   │   │   ├── DashboardLayout.tsx
-│   │   │   │   └── Navbar.tsx
 │   │   │   ├── leads/
-│   │   │   │   ├── LeadDetails.tsx
-│   │   │   │   ├── LeadFilters.tsx
-│   │   │   │   ├── LeadForm.tsx
-│   │   │   │   ├── LeadTable.tsx
-│   │   │   │   └── Pagination.tsx
 │   │   │   └── ui/
-│   │   │       ├── Badge.tsx
-│   │   │       ├── Button.tsx
-│   │   │       ├── Card.tsx
-│   │   │       ├── EmptyState.tsx
-│   │   │       ├── Input.tsx
-│   │   │       ├── Modal.tsx
-│   │   │       ├── Select.tsx
-│   │   │       └── Spinner.tsx
+│   │   │
 │   │   ├── hooks/
-│   │   │   └── useDebounce.ts
 │   │   ├── pages/
-│   │   │   ├── DashboardPage.tsx
-│   │   │   ├── LeadsPage.tsx
-│   │   │   ├── LoginPage.tsx
-│   │   │   └── RegisterPage.tsx
 │   │   ├── services/
-│   │   │   ├── api.ts
-│   │   │   ├── authService.ts
-│   │   │   └── leadService.ts
 │   │   ├── store/
-│   │   │   ├── authStore.ts
-│   │   │   └── themeStore.ts
 │   │   ├── types/
-│   │   │   └── index.ts
 │   │   ├── utils/
-│   │   │   ├── cn.ts
-│   │   │   ├── downloadCSV.ts
-│   │   │   └── formatDate.ts
 │   │   ├── App.tsx
-│   │   ├── main.tsx
-│   │   └── index.css
-│   ├── .env.example
-│   ├── .gitignore
+│   │   └── main.tsx
+│   │
 │   ├── Dockerfile
-│   ├── index.html
 │   ├── nginx.conf
 │   ├── package.json
-│   ├── postcss.config.js
-│   ├── tailwind.config.js
-│   ├── tsconfig.json
 │   └── vite.config.ts
 │
 ├── docker-compose.yml
@@ -155,367 +285,381 @@ smart-leads-dashboard/
 └── README.md
 ```
 
-## 🛠️ Installation & Setup
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- MongoDB (v7.0 or higher)
-- npm or yarn
 
-### Option 1: Docker Setup (Recommended)
+Make sure you have installed:
 
-1. **Clone the repository**
+```text
+Node.js >= 18
+MongoDB >= 7
+npm / yarn
+Docker (optional)
+```
+
+---
+
+## 🐳 Docker Setup
+
+Docker is the recommended way to run the complete application.
+
+### 1. Clone the repository
+
 ```bash
 git clone <your-repo-url>
+
 cd smart-leads-dashboard
 ```
 
-2. **Create environment files**
+### 2. Configure environment variables
 
-Backend (.env):
+Backend:
+
 ```bash
 cd backend
 cp .env.example .env
-# Edit .env with your configurations
 ```
 
-Frontend (.env):
+Frontend:
+
 ```bash
 cd frontend
 cp .env.example .env
-# Edit .env with your configurations
 ```
 
-3. **Run with Docker Compose**
+Configure your MongoDB connection and JWT secret.
+
+### 3. Start the application
+
+From the root directory:
+
 ```bash
-# From root directory
 docker-compose up -d
 ```
 
-The application will be available at:
-- Frontend: http://localhost
-- Backend: http://localhost:5000
-- MongoDB: localhost:27017
+### Application URLs
 
-### Option 2: Manual Setup
+```text
+Frontend  → http://localhost
+Backend   → http://localhost:5000
+MongoDB   → localhost:27017
+```
 
-#### Backend Setup
+---
 
-1. **Navigate to backend directory**
+## 💻 Manual Installation
+
+### Backend
+
 ```bash
 cd backend
-```
 
-2. **Install dependencies**
-```bash
 npm install
-```
 
-3. **Create .env file**
-```bash
 cp .env.example .env
-```
 
-4. **Configure environment variables**
-Edit `.env` with your MongoDB URI and JWT secret
-
-5. **Run the backend**
-```bash
-# Development
 npm run dev
-
-# Production
-npm run build
-npm start
 ```
 
-Backend will run on http://localhost:5000
+Backend:
 
-#### Frontend Setup
+```text
+http://localhost:5000
+```
 
-1. **Navigate to frontend directory**
+### Frontend
+
 ```bash
 cd frontend
-```
 
-2. **Install dependencies**
-```bash
 npm install
-```
 
-3. **Create .env file**
-```bash
 cp .env.example .env
-```
 
-4. **Configure environment variables**
-```env
-VITE_API_URL=http://localhost:5000/api/v1
-```
-
-5. **Run the frontend**
-```bash
-# Development
 npm run dev
-
-# Production
-npm run build
-npm run preview
 ```
 
-Frontend will run on http://localhost:5173
+Frontend:
 
-## 📚 API Documentation
-
-### Authentication Endpoints
-
-#### Register User
-```
-POST /api/v1/auth/register
-Content-Type: application/json
-
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "Password123",
-  "role": "sales" // or "admin"
-}
+```text
+http://localhost:5173
 ```
 
-#### Login
-```
-POST /api/v1/auth/login
-Content-Type: application/json
+---
 
-{
-  "email": "john@example.com",
-  "password": "Password123"
-}
-```
+## 🔑 Environment Variables
 
-#### Get Current User
-```
-GET /api/v1/auth/me
-Authorization: Bearer <token>
-```
+### Backend
 
-#### Get All Users (Admin Only)
-```
-GET /api/v1/auth/users
-Authorization: Bearer <token>
-```
-
-### Lead Endpoints
-
-#### Get All Leads (with filtering & pagination)
-```
-GET /api/v1/leads?page=1&limit=10&status=New&source=Website&search=john&sort=latest
-Authorization: Bearer <token>
-```
-
-#### Get Lead by ID
-```
-GET /api/v1/leads/:id
-Authorization: Bearer <token>
-```
-
-#### Create Lead
-```
-POST /api/v1/leads
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "name": "Jane Smith",
-  "email": "jane@example.com",
-  "status": "New",
-  "source": "Website",
-  "notes": "Interested in premium plan"
-}
-```
-
-#### Update Lead
-```
-PATCH /api/v1/leads/:id
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "status": "Contacted",
-  "notes": "Follow up scheduled"
-}
-```
-
-#### Delete Lead
-```
-DELETE /api/v1/leads/:id
-Authorization: Bearer <token>
-```
-
-#### Export Leads to CSV
-```
-GET /api/v1/leads/export/csv?status=Qualified&source=Instagram
-Authorization: Bearer <token>
-```
-
-#### Get Lead Statistics
-```
-GET /api/v1/leads/stats
-Authorization: Bearer <token>
-```
-
-## 🔐 Authentication & Authorization
-
-### User Roles
-
-1. **Admin**
-   - Full access to all leads
-   - Can view all users
-   - Can manage any lead
-
-2. **Sales**
-   - Can only see their own leads
-   - Can create, update, and delete their own leads
-   - Cannot access other users' leads
-
-### Token Management
-
-- JWT tokens are stored in localStorage
-- Tokens expire in 7 days (configurable)
-- Automatic token refresh on API calls
-- Redirect to login on token expiration
-
-## 🎨 Features in Detail
-
-### Lead Management
-- **Create**: Add new leads with all required information
-- **Read**: View leads in a paginated table with sorting
-- **Update**: Edit lead information including status
-- **Delete**: Remove leads with confirmation modal
-
-### Advanced Filtering
-- **Status Filter**: New, Contacted, Qualified, Lost
-- **Source Filter**: Website, Instagram, Referral
-- **Search**: Real-time search by name or email (debounced)
-- **Sort**: Latest first or Oldest first
-- **Combined Filters**: All filters work together
-
-### CSV Export
-- Export filtered leads to CSV
-- Includes all lead information
-- Respects current filter selections
-- Automatic download
-
-### Dark Mode
-- Toggle between light and dark themes
-- Persists across sessions
-- Smooth transitions
-- Accessible colors
-
-## 🧪 Testing
-
-### Test User Credentials
-
-After setting up, you can create test users:
-
-**Admin User:**
-```json
-{
-  "name": "Admin User",
-  "email": "admin@smartleads.com",
-  "password": "Admin123",
-  "role": "admin"
-}
-```
-
-**Sales User:**
-```json
-{
-  "name": "Sales User",
-  "email": "sales@smartleads.com",
-  "password": "Sales123",
-  "role": "sales"
-}
-```
-
-## 🚀 Deployment
-
-### Deploy on Vercel/Netlify (Frontend)
-
-1. Build the frontend:
-```bash
-cd frontend
-npm run build
-```
-
-2. Deploy the `dist` folder
-
-3. Set environment variables in your hosting platform
-
-### Deploy on Railway/Render (Backend)
-
-1. Push your code to GitHub
-
-2. Connect your repository to Railway/Render
-
-3. Set environment variables
-
-4. Deploy
-
-### MongoDB Atlas
-Use MongoDB Atlas for production database:
-```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/smart-leads
-```
-
-## 📝 Environment Variables
-
-### Backend (.env)
 ```env
 NODE_ENV=development
 PORT=5000
+
 MONGODB_URI=mongodb://localhost:27017/smart-leads
-JWT_SECRET=your_super_secret_jwt_key_change_in_production
+
+JWT_SECRET=your_super_secret_jwt_key
 JWT_EXPIRES_IN=7d
+
 FRONTEND_URL=http://localhost:5173
+
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX=100
 ```
 
-### Frontend (.env)
+### Frontend
+
 ```env
 VITE_API_URL=http://localhost:5000/api/v1
 ```
 
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 👨‍💻 Author
-
-**SYED SADAIN**
-- Email: ssadain8682@gmail.com
-- GitHub: https://github.com/syed-sadain/
-
-## 🙏 Acknowledgments
-
-- React Team for the amazing framework
-- MongoDB team for the robust database
-- TailwindCSS for the utility-first CSS framework
-- All open-source contributors
+> ⚠️ Never commit real secrets, JWT keys, or production database credentials to GitHub.
 
 ---
 
+# 📚 API Reference
 
- 
- 
+## Authentication
+
+### Register
+
+```http
+POST /api/v1/auth/register
+```
+
+### Login
+
+```http
+POST /api/v1/auth/login
+```
+
+### Current User
+
+```http
+GET /api/v1/auth/me
+```
+
+### All Users
+
+```http
+GET /api/v1/auth/users
+```
+
+> Admin access required.
+
+---
+
+## Leads
+
+### Get Leads
+
+```http
+GET /api/v1/leads
+```
+
+Supports:
+
+```text
+?page=1
+&limit=10
+&status=New
+&source=Website
+&search=john
+&sort=latest
+```
+
+### Get Lead
+
+```http
+GET /api/v1/leads/:id
+```
+
+### Create Lead
+
+```http
+POST /api/v1/leads
+```
+
+### Update Lead
+
+```http
+PATCH /api/v1/leads/:id
+```
+
+### Delete Lead
+
+```http
+DELETE /api/v1/leads/:id
+```
+
+### Export CSV
+
+```http
+GET /api/v1/leads/export/csv
+```
+
+### Lead Statistics
+
+```http
+GET /api/v1/leads/stats
+```
+
+---
+
+# 🔒 Security
+
+The application implements multiple security measures:
+
+* JWT authentication
+* bcrypt password hashing
+* Protected API routes
+* Role-based authorization
+* Request validation
+* Helmet security headers
+* CORS configuration
+* API rate limiting
+* Centralized error handling
+* Environment-based secrets
+* Backend authorization enforcement
+
+---
+
+# ⚡ Performance
+
+Performance-focused implementation includes:
+
+* Server-side pagination
+* Debounced search
+* Efficient MongoDB queries
+* Client-side state management with Zustand
+* Optimized API communication
+* Production builds with Vite
+* Dockerized deployment
+
+---
+
+# 🧪 Test Accounts
+
+### Admin
+
+```text
+Email:    admin@smartleads.com
+Password: Admin123
+Role:     admin
+```
+
+### Sales
+
+```text
+Email:    sales@smartleads.com
+Password: Sales123
+Role:     sales
+```
+
+> Use these credentials only in local/demo environments.
+
+---
+
+# 🚢 Deployment
+
+### Frontend
+
+Compatible with:
+
+```text
+Vercel
+Netlify
+Nginx
+Docker
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+### Backend
+
+Compatible with:
+
+```text
+Railway
+Render
+Docker
+AWS
+```
+
+### Database
+
+For production, use:
+
+```text
+MongoDB Atlas
+```
+
+---
+
+# 📸 Screenshots
+
+Add screenshots here to showcase the application:
+
+```text
+/screenshots/
+├── login.png
+├── dashboard.png
+├── leads.png
+├── lead-form.png
+└── dark-mode.png
+```
+
+Example:
+
+```markdown
+![Dashboard](./screenshots/dashboard.png)
+```
+
+---
+
+# 🎯 What This Project Demonstrates
+
+This project demonstrates practical experience with:
+
+* Full-stack application development
+* REST API design
+* Authentication & authorization
+* RBAC implementation
+* MongoDB data modeling
+* Secure backend development
+* State management
+* API integration
+* Search & filtering
+* Pagination
+* CSV data export
+* Docker containerization
+* Responsive UI development
+* TypeScript-based architecture
+
+---
+
+# 👨‍💻 Author
+
+**Syed Sadain**
+
+Full Stack Developer | Python | Node.js | React | TypeScript | AI
+
+📧 `ssadain8682@gmail.com`
+
+🔗 [GitHub](https://github.com/syed-sadain/)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+⭐ If you find this project useful, consider giving it a **star** on GitHub.
